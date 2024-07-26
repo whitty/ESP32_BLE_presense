@@ -1,0 +1,58 @@
+substitutions:
+  log_level: "debug"
+
+########################################################################
+# Example platform
+
+esphome:
+  name: "no-nimble-log-${log_level}"
+  platformio_options:
+    build_flags:
+      - -Wall
+      - -Wextra
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+    version: recommended
+
+logger:
+  level: "${log_level}"
+
+api:
+
+ota:
+  platform: esphome
+
+wifi:
+  ap:
+    {}
+
+captive_portal:
+
+########################################################################
+# This section actually represents the test
+
+# Load ourselves from extrernal
+external_components:
+  - source: ../components
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+mqtt:
+  broker: mqtt.broker
+  username: mqtt_user
+  password: mqtt_pass
+  discovery: true
+
+esp32_ble_tracker:
+  scan_parameters:
+    continuous: true
+    duration: 30sec
+  
+format_ble_presense:
+  area: "Living Room"
+  time_id: homeassistant_time
