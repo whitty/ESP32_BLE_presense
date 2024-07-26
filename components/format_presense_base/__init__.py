@@ -16,7 +16,7 @@ CODEOWNERS = ["@formatBCE", "@whitty"]
 Format_Presence_Base_ns = cg.esphome_ns.namespace("Format_Presence_Base")
 Format_Presence_Base = Format_Presence_Base_ns.class_(
     "Format_Presence_Base",
-    cg.Component,
+    cg.PollingComponent,
     cg.esphome_ns.namespace("mqtt").class_("CustomMQTTDevice"))
 
 CONFIG_SCHEMA_BASE = cv.Schema({

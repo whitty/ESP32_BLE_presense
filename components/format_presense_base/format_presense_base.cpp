@@ -20,7 +20,7 @@ using namespace esphome;
 
 namespace Format_Presence_Base {
 
-static std::string capitalizeString(const std::string& s) {
+std::string Format_Presence_Base::capitalizeString(const std::string& s) {
     std::string ret;
     ret.reserve(s.size());
 
@@ -30,7 +30,7 @@ static std::string capitalizeString(const std::string& s) {
 }
 
 void Format_Presence_Base::setup() {
-    Component::setup();
+    PollingComponent::setup();
 
     subscribe("format_ble_tracker/alive/+", &Format_Presence_Base::on_alive_message);
 }
