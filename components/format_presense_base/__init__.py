@@ -12,6 +12,7 @@ from esphome.const import (
 )
 
 CODEOWNERS = ["@formatBCE", "@whitty"]
+DEPENDENCIES = ["mqtt"]
 
 Format_Presence_Base_ns = cg.esphome_ns.namespace("Format_Presence_Base")
 Format_Presence_Base = Format_Presence_Base_ns.class_(
