@@ -30,8 +30,15 @@ bool Format_BLE_Presense::parse_device(const esphome::esp32_ble_tracker::ESPBTDe
 
     auto ibeacon = device.get_ibeacon();
     if (ibeacon) {
-        const auto ibeacon_uuid = ibeacon->get_uuid();
-        const auto uuid_str = ibeacon_uuid.to_string();
+        // hmm,... ESPBLEiBeacon and ESPBTUUID present the uuid in the opposite order to our strings
+        // re-order them before comparing.
+        auto ibeacon_uuid_s = ibeacon->get_uuid().get_uuid();
+        if (ibeacon_uuid_s.len == ESP_UUID_LEN_128) {
+            for (size_t ix = 0; ix < ESP_UUID_LEN_128 / 2; ++ix) {
+                std::swap(ibeacon_uuid_s.uuid.uuid128[ix], ibeacon_uuid_s.uuid.uuid128[ESP_UUID_LEN_128 - 1 - ix]);
+            }
+        }
+        const auto uuid_str = esphome::esp32_ble::ESPBTUUID::from_uuid(ibeacon_uuid_s).to_string();
 
         if (std::find(this->uuids_.begin(), this->uuids_.end(), uuid_str) != this->uuids_.end()) {
             report(uuid_str, rssi);
